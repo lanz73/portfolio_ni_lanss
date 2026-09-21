@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <title>Lansilog.com</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+         :root {
+            --bg: #0d0618;
+            --bg-alt: #150a28;
+            --panel: #1a0e30;
+            --line: #2c1a48;
+            --text: #f2e9ff;
+            --muted: #a996c9;
+            --violet: #b072ff;
+            --mint: #3fe6b0;
+            --sans: 'Inter', system-ui, sans-serif;
+            --mono: 'JetBrains Mono', monospace;
+            --display: 'Space Grotesk', var(--sans);
+            box-sizing: border-box;
+            padding-top: env(safe-area-inset-top, 0px);
+            padding-bottom: env(safe-area-inset-bottom, 0px);
+        }
+        
+        * {
+            box-sizing: inherit;
+            margin: 0;
+            padding: 0
+        }
+        
+        html {
+            scroll-behavior: smooth;
+            scroll-padding-top: 70px
+        }
+        
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: var(--sans);
+            line-height: 1.6;
+        }
+        
+        @media (prefers-color-scheme: light) {
+             :root:not([data-theme="dark"]) {}
+        }
+        
+        a {
+            color: inherit
+        }
+        
+        .wrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0 1.5rem
+        }
+        
+        img,
+        svg {
+            max-width: 100%
+        }
+        
+        header {
+            position: sticky;
+            top: 0;
+            top: env(safe-area-inset-top, 0px);
+            z-index: 50;
+            background: rgba(13, 6, 24, .85);
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .navwrap {
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 60px
+        }
+        
+        .logo {
+            font-family: var(--mono);
+            font-size: .95rem;
+            color: var(--mint);
+            letter-spacing: .02em
+        }
+        
+        .logo span {
+            color: var(--violet)
+        }
+        
+        nav ul {
+            display: flex;
+            gap: 1.6rem;
+            list-style: none
+        }
+        
+        nav a {
+            font-family: var(--sans);
+            font-weight: 500;
+            font-size: .92rem;
+            color: var(--muted);
+            text-decoration: none;
+            padding: .3rem .1rem;
+            border-bottom: 2px solid transparent;
+            transition: color .2s, border-color .2s;
+        }
+        
+        nav a:hover,
+        nav a:focus-visible {
+            color: var(--text);
+            border-color: var(--violet)
+        }
+        
+        .navtoggle {
+            display: none
+        }
+        
+        section {
+            padding: 4.5rem 0
+        }
+        
+        h1,
+        h2,
+        h3 {
+            font-family: var(--display);
+            font-weight: 700;
+            line-height: 1.15
+        }
+        
+        h2 {
+            font-size: 1.8rem;
+            margin-bottom: 1.6rem
+        }
+        
+        p {
+            color: var(--muted);
+            max-width: 62ch
+        }
+        /* HERO */
+        
+        .hero {
+            padding: 5rem 0 4rem
+        }
+        
+        .hero .wrap {
+            display: grid;
+            gap: 2rem
+        }
+        
+        .terminal {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 30px 60px -30px rgba(176, 114, 255, .25);
+            max-width: 640px;
+        }
+        
+        .term-bar {
+            display: flex;
+            gap: .4rem;
+            align-items: center;
+            padding: .7rem .9rem;
+            background: var(--bg-alt);
+            border-bottom: 1px solid var(--line);
+        }
+        
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%
+        }
+        
+        .dot:nth-child(1) {
+            background: #ff5f57
+        }
+        
+        .dot:nth-child(2) {
+            background: #febc2e
+        }
+        
+        .dot:nth-child(3) {
+            background: #28c840
+        }
+        
+        .term-body {
+            padding: 1.4rem 1.2rem;
+            font-family: var(--mono);
+            font-size: .88rem;
+            color: #d9c8ff
+        }
+        
+        .term-body .prompt {
+            color: var(--mint)
+        }
+        
+        .term-body .out {
+            color: var(--text);
+            margin: .15rem 0 1.1rem
+        }
+        
+        .term-body .muted2 {
+            color: var(--muted)
+        }
+        
+        .cursor {
+            display: inline-block;
+            width: 8px;
+            height: 1em;
+            background: var(--mint);
+            vertical-align: -2px;
+            animation: blink 1.1s steps(1) infinite
+        }
+        
+        @keyframes blink {
+            50% {
+                opacity: 0
+            }
+        }
+        
+        @media (prefers-reduced-motion: reduce) {
+            .cursor {
+                animation: none
+            }
+        }
+        
+        .hero-sub {
+            color: var(--muted);
+            margin-top: 1.6rem;
+            max-width: 56ch
+        }
+        /* ABOUT */
+        
+        .about-grid {
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2.4rem;
+            align-items: start
+        }
+        
+        .avatar {
+            width: 150px;
+            height: 150px;
+            border-radius: 16px;
+            object-fit: cover;
+            border: 1px solid var(--line);
+        }
+        
+        .about-grid p {
+            margin-bottom: 1rem;
+            max-width: 60ch
+        }
+        
+        .tag-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+            margin-top: 1rem
+        }
+        
+        .tag {
+            font-family: var(--mono);
+            font-size: .78rem;
+            color: var(--mint);
+            border: 1px solid var(--line);
+            background: var(--panel);
+            padding: .3rem .6rem;
+            border-radius: 6px;
+        }
+        /* SKILLS */
+        
+        .skill-group {
+            margin-bottom: 1.8rem
+        }
+        
+        .skill-group h3 {
+            font-size: 1rem;
+            color: var(--muted);
+            font-weight: 500;
+            margin-bottom: .7rem;
+            font-family: var(--sans)
+        }
+        
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .6rem
+        }
+        
+        .chip {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            padding: .45rem .9rem;
+            border-radius: 999px;
+            font-size: .88rem;
+        }
+        
+        .chip.accent {
+            border-color: var(--violet);
+            color: #e6d4ff
+        }
+        /* PROJECTS */
+        
+        .empty {
+            border: 1px dashed var(--line);
+            border-radius: 12px;
+            padding: 2.2rem 1.6rem;
+            text-align: left;
+            background: var(--bg-alt);
+        }
+        
+        .empty h3 {
+            font-family: var(--display);
+            font-size: 1.15rem;
+            margin-bottom: .5rem
+        }
+        
+        .empty p {
+            margin-bottom: 1rem
+        }
+        
+        .btn {
+            display: inline-block;
+            font-weight: 600;
+            font-size: .9rem;
+            background: var(--violet);
+            color: #0d0618;
+            padding: .6rem 1.1rem;
+            border-radius: 8px;
+            text-decoration: none;
+            transition: transform .15s, background .2s;
+        }
+        
+        .btn:hover,
+        .btn:focus-visible {
+            background: var(--mint)
+        }
+        /* HOBBIES */
+        
+        .hobby-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+            gap: .9rem
+        }
+        
+        .hobby {
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: 1rem 1.1rem;
+            font-size: .92rem;
+        }
+        
+        .hobby b {
+            display: block;
+            font-family: var(--display);
+            font-size: 1rem;
+            margin-bottom: .2rem
+        }
+        /* SOCIALS */
+        
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: .7rem;
+            max-width: 420px
+        }
+        
+        .social-link {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid var(--line);
+            border-radius: 10px;
+            padding: .9rem 1.1rem;
+            text-decoration: none;
+            background: var(--panel);
+            transition: border-color .2s, transform .15s;
+        }
+        
+        .social-link:hover,
+        .social-link:focus-visible {
+            border-color: var(--violet);
+            transform: translateX(3px)
+        }
+        
+        .social-name {
+            font-weight: 600
+        }
+        
+        .social-handle {
+            color: var(--muted);
+            font-family: var(--mono);
+            font-size: .85rem
+        }
+        
+        footer {
+            border-top: 1px solid var(--line);
+            padding: 2.2rem 0;
+            text-align: center
+        }
+        
+        footer p {
+            margin: 0 auto;
+            color: var(--muted);
+            font-size: .85rem;
+            font-family: var(--mono)
+        }
+        
+         :focus-visible {
+            outline: 2px solid var(--mint);
+            outline-offset: 2px
+        }
+        
+        @media (max-width:640px) {
+            .navwrap {
+                padding: 0 1rem
+            }
+            nav ul {
+                gap: 1rem
+            }
+            nav a {
+                font-size: .82rem
+            }
+            h2 {
+                font-size: 1.5rem
+            }
+            .about-grid {
+                grid-template-columns: 1fr
+            }
+            .avatar {
+                width: 110px;
+                height: 110px
+            }
+            section {
+                padding: 3rem 0
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div class="navwrap">
+            <div class="logo">lanz<span>@</span>dev<span>:</span>~$</div>
+            <nav aria-label="Primary">
+                <ul>
+                    <li><a href="#home">home</a></li>
+                    <li><a href="#about">about</a></li>
+                    <li><a href="#skills">skills</a></li>
+                    <li><a href="#projects">projects</a></li>
+                    <li><a href="#hobbies">hobbies</a></li>
+                    <li><a href="#socials">socials</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="hero">
+            <div class="wrap">
+                <div class="terminal">
+                    <div class="term-bar"><span class="dot"></span><span class="dot"></span><span class="dot"></span></div>
+                    <div class="term-body">
+                        <div><span class="prompt">lanz@dev</span><span class="muted2">:~$</span> whoami</div>
+                        <div class="out">Lanz Renier A. Casinao</div>
+                        <div><span class="prompt">lanz@dev</span><span class="muted2">:~$</span> cat status.txt</div>
+                        <div class="out">2nd year BSIT student, still larping at coding —<br>except the larp is starting to work.</div>
+                        <div><span class="prompt">lanz@dev</span><span class="muted2">:~$</span> echo $currently</div>
+                        <div class="out">dating Windy (aka babi, baby, langga) 💜</div>
+                        <div><span class="prompt">lanz@dev</span><span class="muted2">:~$</span> <span class="cursor"></span></div>
+                    </div>
+                </div>
+                <p class="hero-sub">Portfolio of an aspiring IT professional experimenting with programming, web development, and a healthy amount of cybersecurity curiosity.</p>
+            </div>
+        </section>
+
+        <section id="about">
+            <div class="wrap">
+                <h2>About</h2>
+                <div class="about-grid">
+                    <img class="avatar" src="data:image/jpeg;base64,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"
+                        alt="Portrait of Lanz Renier Casinao">
+                    <div>
+                        <p>I'm a 19-year-old aspiring IT professional who enjoys experimenting with programming, web development, and technology. I sometimes joke that I "larp at coding," but I'm genuinely interested in learning and improving through hands-on
+                            projects.
+                        </p>
+                        <p>I'm currently a second-year BSIT student, continuing to build my knowledge across programming, software development, and web development.</p>
+                        <p>Lately I'm curious about cybersecurity — how systems, networks, and security actually work. (Don't worry, the "I'll hack your Wi-Fi so I can connect for free" bit is just a joke.)</p>
+                        <div class="tag-row">
+                            <span class="tag">BSIT · 2nd Year</span>
+                            <span class="tag">Cebu, PH</span>
+                            <span class="tag">Aspiring IT Pro</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <div class="wrap">
+                <h2>Skills</h2>
+                <div class="skill-group">
+                    <h3>Languages</h3>
+                    <div class="chips">
+                        <span class="chip accent">Java</span>
+                        <span class="chip">C</span>
+                        <span class="chip">Python</span>
+                        <span class="chip">JavaScript</span>
+                        <span class="chip">HTML</span>
+                        <span class="chip">CSS</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>Tools</h3>
+                    <div class="chips">
+                        <span class="chip">IntelliJ IDEA</span>
+                        <span class="chip">NetBeans</span>
+                    </div>
+                </div>
+                <div class="skill-group">
+                    <h3>Currently exploring</h3>
+                    <div class="chips">
+                        <span class="chip">Cybersecurity fundamentals</span>
+                        <span class="chip">Networking</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="projects">
+            <div class="wrap">
+                <h2>Projects</h2>
+                <div class="empty">
+                    <h3>Nothing published here yet</h3>
+                    <p>The console programs and class projects are still living on GitHub. Real write-ups are coming as they get polished — in the meantime, browse the repos directly.</p>
+                    <a class="btn" href="https://github.com/lanz73" target="_blank" rel="noopener">View GitHub →</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="hobbies">
+            <div class="wrap">
+                <h2>Hobbies</h2>
+                <div class="hobby-grid">
+                    <div class="hobby"><b>Boxing</b>occasional sparring, mostly conditioning</div>
+                    <div class="hobby"><b>Taekwondo</b>trained on and off</div>
+                    <div class="hobby"><b>Running</b>clears the head between classes</div>
+                    <div class="hobby"><b>Badminton</b>casual games with friends</div>
+                    <div class="hobby"><b>Table tennis</b>quick matches, high stakes bragging rights</div>
+                    <div class="hobby"><b>Reading</b>tech blogs and the occasional novel</div>
+                    <div class="hobby"><b>Gaming</b>whenever assignments allow</div>
+                    <div class="hobby"><b>Music</b>usually playing in the background while coding</div>
+                </div>
+            </div>
+        </section>
+
+        <section id="socials">
+            <div class="wrap">
+                <h2>Socials</h2>
+                <div class="social-list">
+                    <a class="social-link" href="https://github.com/lanz73" target="_blank" rel="noopener">
+                        <span class="social-name">GitHub</span><span class="social-handle">@lanz73</span>
+                    </a>
+                    <a class="social-link" href="https://www.facebook.com/share/1B9V5aqKFr/" target="_blank" rel="noopener">
+                        <span class="social-name">Facebook</span><span class="social-handle">profile →</span>
+                    </a>
+                    <a class="social-link" href="https://www.instagram.com/ihate_tikolbol?stkn=MWM3aHpkeTFyM3o4bw==" target="_blank" rel="noopener">
+                        <span class="social-name">Instagram</span><span class="social-handle">@ihate_tikolbol</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>lansiloggg.com — built one commit at a time.</p>
+    </footer>
+
+</body>
+
+</html>
